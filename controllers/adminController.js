@@ -3,6 +3,7 @@ const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = '123bd070ac75920'
 const db = require('../models')
 const Restaurant = db.Restaurant
+const User = db.User
 
 const adminController = {
   getRestaurants: (req, res) => {
@@ -112,8 +113,28 @@ const adminController = {
             res.redirect('/admin/restaurants')
           })
       })
+  },
+  getUsers: (req, res) => {
+    return User.findAll({ raw: true })
+      .then(users => {
+        return res.render('admin/users', { users })
+      })
+  },
+  toggleAdmin: (req, res) => {
+    return User.findByPk(req.params.id)
+      .then(user => {
+        const { name, email, password } = user.toJSON()
+        if (user.toJSON().isAdmin) {
+          user.update({ name, email, password, isAdmin: false })
+        } else {
+          user.update({ name, email, password, isAdmin: true })
+        }
+      })
+      .then(() => {
+        req.flash('success_messages', '權限修改成功')
+        res.redirect('/admin/users')
+      })
   }
-
 }
 
 module.exports = adminController
