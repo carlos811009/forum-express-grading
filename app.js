@@ -3,6 +3,7 @@ const handlebars = require('express-handlebars')
 const flash = require('connect-flash')
 const session = require('express-session')
 const passport = require('./config/passport')
+const methodOverride = require('method-override')
 const db = require('./models')
 const app = express()
 const port = 3000
@@ -10,7 +11,7 @@ const port = 3000
 app.use(express.urlencoded({ extended: true }))
 app.engine('handlebars', handlebars({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
-
+app.use(methodOverride('_method'))
 app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }))
 app.use(flash())
 
@@ -28,7 +29,6 @@ app.use((req, res, next) => {
 
 require('./routes')(app, passport)
 module.exports = app
-
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
