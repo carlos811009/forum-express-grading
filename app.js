@@ -7,7 +7,7 @@ const methodOverride = require('method-override')
 const db = require('./models')
 const app = express()
 const port = 3000
-
+app.use('/upload', express.static(__dirname + '/upload'))
 app.use(express.urlencoded({ extended: true }))
 app.engine('handlebars', handlebars({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
