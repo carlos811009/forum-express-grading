@@ -1,0 +1,46 @@
+<h1>餐廳後台</h1>
+
+<div class="mt-3"><a href="/admin/restaurants">Restaurants</a> | <a href="/admin/users">Users</a> | <a
+    href="/admin/categories">Categories</a></div>
+
+
+
+
+{{#if category}}
+<form action="/admin/categories/{{category.id}}?_method=PUT" method="post">
+  <input type="text" name="category_name" id="category_name" value="{{category.name}}">
+  <button type="submit">submit</button> <a href="/admin/categories">or create New</a>
+</form>
+{{else}}
+<form action="/admin/categories" method="post">
+  <input type="text" name="category_name" id="category_name">
+  <button type="submit">Add New</button>
+</form>
+{{/if}}
+
+
+<table class="table mt-3">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Category Name</th>
+      <th scope="col">#</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each categories}}
+    <tr>
+      <th scope="row">{{this.id}}</th>
+      <td>{{this.name}}</td>
+      <td>
+        <form action="/admin/categories/{{this.id}}?_method=delete" method="POST">
+          <a href="/admin/categories/{{this.id}}">Edit</a>
+          <button type="submit" class="btn btn-link">
+            Delete
+          </button>
+        </form>
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>

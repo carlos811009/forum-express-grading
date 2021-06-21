@@ -26,10 +26,19 @@ module.exports = (app, passport) => {
   app.get('/admin/users', authenticatedAdmin, adminController.getUsers)
   app.put('/admin/users/:id/toggleAdmin', authenticatedAdmin, adminController.toggleAdmin)
 
+  app.get('/admin/categories', authenticatedAdmin, adminController.getCategories)
+  app.post('/admin/categories', authenticatedAdmin, adminController.postCategories)
+  app.delete('/admin/categories/:id', authenticatedAdmin, adminController.deleteCategory)
+  app.get('/admin/categories/:id', authenticatedAdmin, adminController.getCategories)
+  app.put('/admin/categories/:id', authenticatedAdmin, adminController.putCategory)
+
+
   app.get('/admin/restaurants/create', authenticatedAdmin, adminController.createRestaurant)
   app.get('/admin/restaurants/:id/edit', authenticatedAdmin, adminController.editRestaurant)
   app.get('/admin/restaurants/:id', authenticatedAdmin, adminController.getRestaurant)
   app.post('/admin/restaurants', authenticatedAdmin, upload.single('image'), adminController.postRestaurant)
+
+
   app.put('/admin/restaurants/:id', authenticatedAdmin, upload.single('image'), adminController.putRestaurant)
   app.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'))
   app.get('/admin/restaurants', authenticatedAdmin, adminController.getRestaurants)
