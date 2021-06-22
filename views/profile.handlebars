@@ -1,0 +1,22 @@
+<div class="row">
+  <div style="display: flex;">
+    <img class="img-responsive center-block" src="{{user.image}}" style="width: 250px;margin-bottom: 25px;">
+    <div>
+      <div class="col-md-12">
+        <h1>{{user.name}}</h1>
+      </div>
+      <div class="col-md-4">
+        <br>
+        <div class="email">{{user.email}}</div>
+      </div>
+      <div class="col-md-8">
+        <a href="/users/{{user.id}}/edit">edit</a>
+      </div>
+    </div>
+  </div>
+  <hr>
+</div>
+<hr>
+<br />
+<br />
+<a href="javascript:history.back()">回上一頁</a>

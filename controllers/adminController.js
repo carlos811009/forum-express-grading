@@ -84,6 +84,7 @@ const adminController = {
     const { name, tel, address, opening_hours, description } = req.body
     if (!name) {
       req.flash('error_messages', "name didn't exist")
+      // return res.redirect(`/admin/restaurants/${req.params.id}/edit`)
       return res.redirect('back')
     }
 
