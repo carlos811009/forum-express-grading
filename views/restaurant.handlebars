@@ -20,10 +20,20 @@
 </div>
 <br />
 <br />
+<br /><br />
+<h3>所有評論：</h3>
+{{#each restaurant.Comments}}
+<blockquote class="blockquote mb-0">
+  <h4><a href="/users/{{this.User.id}}">{{this.User.name}}</a></h4>
+  <p>{{this.text}}</p>
+  <footer class="blockquote-footer">{{moment this.createdAt}}</footer>
+</blockquote>
+<hr />
+{{/each}}
 <form action="/comments" method="POST">
   <div class="form-group">
     <label for="text">留下評論：</label>
-    <textarea class="form-control" id="text" name="text" rows="3"></textarea>
+    <textarea class="form-control" id="text" name="text" rows="3" required></textarea>
   </div>
   <input type="hidden" name="restaurantId" value="{{restaurant.id}}" />
   <button type="submit" class="btn btn-primary">Submit</button>

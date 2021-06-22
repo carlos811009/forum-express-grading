@@ -13,7 +13,6 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const port = process.env.PORT || 3000
-
 app.use('/upload', express.static(__dirname + '/upload'))
 app.use(express.urlencoded({ extended: true }))
 app.engine('handlebars', handlebars({
@@ -24,7 +23,6 @@ app.set('view engine', 'handlebars')
 app.use(methodOverride('_method'))
 app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }))
 app.use(flash())
-
 app.use(passport.initialize())
 app.use(passport.session())
 
