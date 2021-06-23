@@ -68,6 +68,12 @@ const restController = {
       ]
     })
       .then(restaurant => {
+        let viewCounts = restaurant.toJSON().viewCounts || 0
+        viewCounts++
+        restaurant.viewCounts = viewCounts
+        restaurant.save()
+        // restaurant.update({ viewCounts: viewCounts })
+        //也可達成，但不清楚兩者實際上差異
         return res.render('restaurant', { restaurant: restaurant.toJSON() })
       })
   },

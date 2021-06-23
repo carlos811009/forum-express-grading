@@ -1,13 +1,16 @@
-<div>
+<h1>
   {{restaurant.name}}
-</div>
+</h1>
+<h5>
+  [{{restaurant.Category.name}}]
+</h5>
 <div>
-  {{restaurant.Category.name}}
+  <img class="img-responsive center-block" src="{{restaurant.image}}" style="width: 250px;margin-bottom: 25px;">
 </div>
 <br />
 <hr>
 <ul>
-  <li>瀏覽次數 : </li>
+  <li>瀏覽次數 : {{restaurant.viewCounts}}</li>
   <li>評論數: {{commentNum}}</li>
   <li>收藏數: </li>
 </ul>
