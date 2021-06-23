@@ -4,6 +4,8 @@ const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const bcrypt = require('bcryptjs')
 const db = require('../models')
 const User = db.User
+const Comment = db.Comment
+const Restaurant = db.Restaurant
 
 const userController = {
   signUpPage: (req, res) => {
@@ -49,11 +51,11 @@ const userController = {
     res.redirect('/signin')
   },
   getUser: (req, res) => {
-    User.findByPk(req.params.id)
+    User.findByPk(req.params.id, {
+      include: [{ model: Comment, include: [Restaurant] }]
+    })
       .then((user) => {
-        //因為登入之後就有在app.js上面設定req.locals.user
-        //所以在page上面直接使用user就可以了
-        return res.render('profile')
+        return res.render('profile', { user: user.toJSON() })
       })
   },
   editUser: (req, res) => {

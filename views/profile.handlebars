@@ -18,5 +18,22 @@
 </div>
 <hr>
 <br />
+<div class="row" style="background-color: rgba(235, 228, 228, 0.2)">
+  <div class="col-12 mb-2 "
+    style="border-bottom: 1px solid gray; background-color: rgba(190, 190, 190,0.5); height:50px;display:flex; align-items:center">
+    已評論餐廳訊息
+  </div>
+  <div class="col-12" style=" display: flex">
+    {{#each user.Comments}}
+    <div class="comment-container mx-2">
+      <a href="/restaurants/{{this.Restaurant.id}}">
+        <img style="width:80px" src="{{this.Restaurant.image}}">
+      </a>
+      <div>{{this.Restaurant.name}}</div>
+    </div>
+    {{/each}}
+  </div>
+</div>
+<br />
 <br />
 <a href="javascript:history.back()">回上一頁</a>
