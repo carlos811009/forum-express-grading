@@ -79,34 +79,35 @@ const restController = {
   },
 
   getFeeds: (req, res) => {
-    return Restaurant.findAll({
-      raw: true,
-      nest: true,
-      include: [Category],
-      order: [['createdAt', 'DESC']],
-      limit: 10
-    }).then(restaurants => {
-      Comment.findAll({
+    return Promise.all([
+      Restaurant.findAll({
+        limit: 10,
         raw: true,
         nest: true,
-        include: [User, Restaurant],
         order: [['createdAt', 'DESC']],
-        limit: 10
-      }).then(comments => {
-        return res.render('feeds', {
-          restaurants,
-          comments
-        })
+        include: [Category]
+      }),
+      Comment.findAll({
+        limit: 10,
+        raw: true,
+        nest: true,
+        order: [['createdAt', 'DESC']],
+        include: [User, Restaurant]
+      })
+    ]).then(([restaurants, comments]) => {
+      return res.render('feeds', {
+        restaurants: restaurants,
+        comments: comments
       })
     })
   },
+
   getDashboard: (req, res) => {
     Restaurant.findByPk(req.params.id, {
-      include: [Category, Comment]
+      include: [Category, { model: Comment, include: [User] }]
     })
       .then(restaurant => {
-        const commentNum = restaurant.toJSON().Comments.length
-        return res.render('dashboard', { restaurant: restaurant.toJSON(), commentNum })
+        return res.render('dashboard', { restaurant: restaurant.toJSON() })
       })
   }
 }
