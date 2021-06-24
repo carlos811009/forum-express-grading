@@ -5,7 +5,6 @@ const db = require('../models')
 const User = db.User
 const Restaurant = db.Restaurant
 // const Favorite = db.Favorite
-const Like = db.Like
 
 // setup passport strategy
 passport.use(new LocalStrategy(
@@ -34,8 +33,8 @@ passport.deserializeUser((id, cb) => {
     include: [
       { model: Restaurant, as: 'FavoritedRestaurants' },
       { model: Restaurant, as: 'LikedRestaurants' },
-      { model: User, as: 'Followings' },
-      { model: User, as: 'Followers' }
+      { model: User, as: 'Followers' },
+      { model: User, as: 'Followings' }
     ]
     // include: [Favorite]
   }).then(user => {

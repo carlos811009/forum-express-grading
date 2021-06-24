@@ -180,8 +180,25 @@ const userController = {
         res.redirect('back')
       })
       .catch(err => console.log('remoteLike error'))
+  },
+  getTopUser: (req, res) => {
+    User.findAll({
+      raw: true,
+      nest: true,
+      include: [
+        { model: User, as: 'Followers' }
+      ]
+    })
+      .then(users => {
+        users = users.map(user => ({
+          ...user,
+          FollowerCount: user.Followers.length,
+          isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
+        }))
+        users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
+        return res.render('topUser', { users })
+      })
   }
-
 }
 
 module.exports = userController
