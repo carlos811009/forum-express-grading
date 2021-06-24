@@ -66,6 +66,8 @@ module.exports = (app, passport) => {
   app.get('/logout', userController.logout)
 
   app.get('/users/top', authenticated, userController.getTopUser)
+  app.post('/following/:userId', authenticated, userController.addFollowing)
+  app.delete('/following/:userId', authenticated, userController.removeFollowing)
 
   app.get('/users/:id/edit', authenticated, userController.editUser)
   app.get('/users/:id', userController.getUser)

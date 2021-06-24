@@ -9,6 +9,7 @@ const Comment = db.Comment
 const Restaurant = db.Restaurant
 const Favorite = db.Favorite
 const Like = db.Like
+const Followship = db.Followship
 
 
 const userController = {
@@ -198,6 +199,43 @@ const userController = {
         users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
         return res.render('topUser', { users })
       })
+  },
+  addFollowing: (req, res) => {
+    Followship.findOne({
+      where: {
+        followerId: helpers.getUser(req).id,
+        followingId: req.params.userId
+      }
+    })
+      .then(follow => {
+        if (follow) {
+          req.flash('error_messages', 'already Following')
+          return res.redirect('back')
+        } else {
+          Followship.create({
+            followerId: helpers.getUser(req).id,
+            followingId: req.params.userId
+          })
+            .then(() => {
+              req.flash('success_messages', 'Success Following')
+              res.redirect('back')
+            })
+            .catch(err => console.log('addFollow error'))
+        }
+      })
+  },
+  removeFollowing: (req, res) => {
+    Followship.findOne({
+      where: {
+        followerId: helpers.getUser(req).id,
+        followingId: req.params.userId
+      }
+    })
+      .then(follow => {
+        follow.destroy()
+        res.redirect('back')
+      })
+      .catch(err => console.log('remoteFollow error'))
   }
 }
 
