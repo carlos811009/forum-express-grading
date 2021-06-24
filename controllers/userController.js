@@ -6,6 +6,8 @@ const db = require('../models')
 const User = db.User
 const Comment = db.Comment
 const Restaurant = db.Restaurant
+const Favorite = db.Favorite
+
 
 const userController = {
   signUpPage: (req, res) => {
@@ -100,7 +102,48 @@ const userController = {
             })
         })
     }
+  },
+  addFavorite: (req, res) => {
+    return Favorite.findOne({
+      where: {
+        RestaurantId: req.params.restaurantId,
+        UserId: req.user.id
+      }
+    })
+      .then(favorite => {
+        if (favorite) {
+          req.flash('error_messages', 'add to Favorite already')
+          return res.redirect('back')
+        } else {
+          Favorite.create({
+            UserId: req.user.id,
+            RestaurantId: req.params.restaurantId
+          })
+            .then(() => {
+              req.flash('success_messages', 'Restaurant add to Favorite')
+              res.redirect('back')
+            })
+            .catch(err => console.log('addFavorite error'))
+        }
+      })
+  },
+  removeFavorite: (req, res) => {
+    return Favorite.findOne({
+      where: {
+        RestaurantId: req.params.restaurantId,
+        UserId: req.user.id
+      }
+    })
+      .then(favorite => {
+        favorite.destroy()
+      })
+      .then(() => {
+        req.flash('error_messages', 'Restaurant remove from Favorite')
+        res.redirect('back')
+      })
+      .catch(err => console.log('remoteFavorite error'))
   }
+
 }
 
 module.exports = userController
