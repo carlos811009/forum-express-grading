@@ -9,7 +9,6 @@ let offset = 0
 
 const restController = {
   getRestaurants: (req, res) => {
-
     const whereQuery = {}
     let categoryId = ''
     if (req.query.page) {
@@ -38,7 +37,8 @@ const restController = {
           return {
             ...each,
             description: each.description.substring(0, 50),
-            CategoryName: Category.name
+            CategoryName: Category.name,
+            isFavorited: req.user.FavoritedRestaurants.map(d => d.id).includes(each.id)
           }
         })
         Category.findAll({
@@ -64,6 +64,7 @@ const restController = {
     Restaurant.findByPk(req.params.id, {
       include: [
         Category,
+        { model: User, as: 'FavoritedUsers' },
         { model: Comment, include: [User] }
       ]
     })
@@ -72,9 +73,10 @@ const restController = {
         viewCounts++
         restaurant.viewCounts = viewCounts
         restaurant.save()
+        const isFavorited = restaurant.FavoritedUsers.map(d => d.id).includes(req.user.id)
         // restaurant.update({ viewCounts: viewCounts })
         //也可達成，但不清楚兩者實際上差異
-        return res.render('restaurant', { restaurant: restaurant.toJSON() })
+        return res.render('restaurant', { restaurant: restaurant.toJSON(), isFavorited })
       })
   },
 
