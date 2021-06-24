@@ -76,13 +76,12 @@ const restController = {
         viewCounts++
         restaurant.viewCounts = viewCounts
         restaurant.save()
-          .then(restaurant => {
-            const isFavorited = restaurant.FavoritedUsers.map(F => F.id).includes(helpers.getUser(req).id)
-            const isLiked = restaurant.LikedUsers.map(L => L.id).includes(helpers.getUser(req).id)
-            // restaurant.update({ viewCounts: viewCounts })
-            //也可達成，但不清楚兩者實際上差異
-            return res.render('restaurant', { restaurant: restaurant.toJSON(), isFavorited, isLiked })
-          })
+        const isFavorited = restaurant.FavoritedUsers.map(F => F.id).includes(helpers.getUser(req).id)
+        const isLiked = restaurant.LikedUsers.map(L => L.id).includes(helpers.getUser(req).id)
+        // restaurant.update({ viewCounts: viewCounts })
+        //也可達成，但不清楚兩者實際上差異
+        return res.render('restaurant', { restaurant: restaurant.toJSON(), isFavorited, isLiked })
+
       })
   },
 
