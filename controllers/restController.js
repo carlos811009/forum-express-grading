@@ -1,4 +1,5 @@
 const db = require('../models')
+const helpers = require('../_helpers')
 const Restaurant = db.Restaurant
 const Category = db.Category
 const Comment = db.Comment
@@ -39,8 +40,8 @@ const restController = {
             description: each.description.substring(0, 50),
             CategoryName: Category.name,
             // isFavorited: req.user.Favorites.map(d => d.RestaurantId).includes(each.id)
-            isFavorited: req.user.FavoritedRestaurants.map(F => F.id).includes(each.id),
-            isLiked: req.user.LikedRestaurants.map(L => L.id).includes(each.id)
+            isFavorited: helpers.getUser(req).FavoritedRestaurants.map(F => F.id).includes(each.id),
+            isLiked: helpers.getUser(req).LikedRestaurants.map(L => L.id).includes(each.id)
           }
         })
         Category.findAll({
@@ -75,11 +76,13 @@ const restController = {
         viewCounts++
         restaurant.viewCounts = viewCounts
         restaurant.save()
-        const isFavorited = restaurant.FavoritedUsers.map(F => F.id).includes(req.user.id)
-        const isLiked = restaurant.LikedUsers.map(F => F.id).includes(req.user.id)
-        // restaurant.update({ viewCounts: viewCounts })
-        //也可達成，但不清楚兩者實際上差異
-        return res.render('restaurant', { restaurant: restaurant.toJSON(), isFavorited, isLiked })
+          .then(restaurant => {
+            const isFavorited = restaurant.FavoritedUsers.map(F => F.id).includes(helpers.getUser(req).id)
+            const isLiked = restaurant.LikedUsers.map(L => L.id).includes(helpers.getUser(req).id)
+            // restaurant.update({ viewCounts: viewCounts })
+            //也可達成，但不清楚兩者實際上差異
+            return res.render('restaurant', { restaurant: restaurant.toJSON(), isFavorited, isLiked })
+          })
       })
   },
 

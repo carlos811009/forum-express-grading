@@ -1,5 +1,6 @@
 const fs = require('fs')
 const imgur = require('imgur-node-api')
+const helpers = require('../_helpers')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const bcrypt = require('bcryptjs')
 const db = require('../models')
@@ -169,7 +170,7 @@ const userController = {
   removeLike: (req, res) => {
     Like.findOne({
       where: {
-        UserId: req.user.id,
+        UserId: helpers.getUser(req).id,
         RestaurantId: req.params.restaurantId
       }
     })
