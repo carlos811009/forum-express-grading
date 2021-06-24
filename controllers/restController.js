@@ -39,7 +39,7 @@ const restController = {
             ...each,
             description: each.description.substring(0, 50),
             CategoryName: Category.name,
-            // isFavorited: req.user.Favorites.map(d => d.RestaurantId).includes(each.id)
+            // isFavorited: helpers.getUser(req).Favorites.map(d => d.RestaurantId).includes(each.id)
             isFavorited: helpers.getUser(req).FavoritedRestaurants.map(F => F.id).includes(each.id),
             isLiked: helpers.getUser(req).LikedRestaurants.map(L => L.id).includes(each.id)
           }

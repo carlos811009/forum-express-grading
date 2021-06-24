@@ -107,7 +107,7 @@ const userController = {
     return Favorite.findOne({
       where: {
         RestaurantId: req.params.restaurantId,
-        UserId: req.user.id
+        UserId: helpers.getUser(req).id
       }
     })
       .then(favorite => {
@@ -116,7 +116,7 @@ const userController = {
           return res.redirect('back')
         } else {
           return Favorite.create({
-            UserId: req.user.id,
+            UserId: helpers.getUser(req).id,
             RestaurantId: req.params.restaurantId
           })
             .then(() => {
@@ -131,7 +131,7 @@ const userController = {
     return Favorite.findOne({
       where: {
         RestaurantId: req.params.restaurantId,
-        UserId: req.user.id
+        UserId: helpers.getUser(req).id
       }
     })
       .then(favorite => {
@@ -146,7 +146,7 @@ const userController = {
   addLike: (req, res) => {
     Like.findOne({
       where: {
-        UserId: req.user.id,
+        UserId: helpers.getUser(req).id,
         RestaurantId: req.params.restaurantId
       }
     })
@@ -156,7 +156,7 @@ const userController = {
           return res.redirect('back')
         } else {
           Like.create({
-            UserId: req.user.id,
+            UserId: helpers.getUser(req).id,
             RestaurantId: req.params.restaurantId
           })
             .then(() => {
