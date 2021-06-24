@@ -7,6 +7,7 @@ const User = db.User
 const Comment = db.Comment
 const Restaurant = db.Restaurant
 const Favorite = db.Favorite
+const Like = db.Like
 
 
 const userController = {
@@ -67,13 +68,11 @@ const userController = {
       })
   },
   putUser: (req, res) => {
-    console.log(req.body)
     if (!req.body.name) {
       req.flash('error_messages', "name didn't exist")
       return res.redirect('back')
     }
     const { file } = req
-    console.log(file)
     if (file) {
       imgur.setClientID(IMGUR_CLIENT_ID);
       imgur.upload(file.path, (err, img) => {
@@ -115,7 +114,7 @@ const userController = {
           req.flash('error_messages', 'add to Favorite already')
           return res.redirect('back')
         } else {
-          Favorite.create({
+          return Favorite.create({
             UserId: req.user.id,
             RestaurantId: req.params.restaurantId
           })
@@ -142,6 +141,44 @@ const userController = {
         res.redirect('back')
       })
       .catch(err => console.log('remoteFavorite error'))
+  },
+  addLike: (req, res) => {
+    Like.findOne({
+      where: {
+        UserId: req.user.id,
+        RestaurantId: req.params.restaurantId
+      }
+    })
+      .then(like => {
+        if (like) {
+          req.flash('error_messages', 'add to Like already')
+          return res.redirect('back')
+        } else {
+          Like.create({
+            UserId: req.user.id,
+            RestaurantId: req.params.restaurantId
+          })
+            .then(() => {
+              req.flash('success_messages', 'Restaurant add to Like')
+              res.redirect('back')
+            })
+            .catch(err => console.log('addLike error'))
+        }
+      })
+  },
+  removeLike: (req, res) => {
+    Like.findOne({
+      where: {
+        UserId: req.user.id,
+        RestaurantId: req.params.restaurantId
+      }
+    })
+      .then(like => {
+        like.destroy()
+        req.flash('error_messages', 'remove Like')
+        res.redirect('back')
+      })
+      .catch(err => console.log('remoteLike error'))
   }
 
 }
