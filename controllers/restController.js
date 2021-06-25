@@ -37,7 +37,7 @@ const restController = {
         const data = result.rows.map(each => {
           return {
             ...each,
-            description: each.description.substring(0, 50),
+            description: each.description.substring(0, 30),
             CategoryName: Category.name,
             // isFavorited: helpers.getUser(req).Favorites.map(d => d.RestaurantId).includes(each.id)
             isFavorited: helpers.getUser(req).FavoritedRestaurants.map(F => F.id).includes(each.id),
@@ -72,7 +72,7 @@ const restController = {
       ]
     })
       .then(restaurant => {
-        let viewCounts = restaurant.toJSON().viewCounts || 0
+        let viewCounts = restaurant.viewCounts || 0
         viewCounts++
         restaurant.viewCounts = viewCounts
         restaurant.save()
@@ -111,10 +111,36 @@ const restController = {
 
   getDashboard: (req, res) => {
     Restaurant.findByPk(req.params.id, {
-      include: [Category, { model: Comment, include: [User] }]
+      include: [Category,
+        { model: Comment, include: [User] },
+        { model: User, as: 'FavoritedUsers' }
+      ]
     })
       .then(restaurant => {
-        return res.render('dashboard', { restaurant: restaurant.toJSON() })
+        const favoriteCounts = restaurant.FavoritedUsers.length
+        return res.render('dashboard', { restaurant: restaurant.toJSON(), favoriteCounts })
+      })
+  },
+  getTopRestaurants: (req, res) => {
+    Restaurant.findAll({
+      include: [
+        Category,
+        { model: User, as: 'FavoritedUsers' }
+      ]
+    })
+      .then(restaurants => {
+        restaurants = restaurants.map(r => (
+          {
+            ...r,
+            id: r.id,
+            Category: r.Category.dataValues,
+            description: r.description.substring(0, 50),
+            favoriteCounts: r.FavoritedUsers.length,
+            isFavorited: helpers.getUser(req).FavoritedRestaurants.map(f => f.id).includes(r.id)
+          }))
+        restaurants = restaurants.sort((a, b) => b.favoriteCounts - a.favoriteCounts)
+        restaurants = restaurants.splice(0, 9)
+        return res.render('topRestaurants', { restaurants })
       })
   }
 }
