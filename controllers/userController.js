@@ -65,12 +65,13 @@ const userController = {
       ]
     })
       .then((user) => {
-        const isUser = user.toJSON().id === helpers.getUser(req).id
-        const commentCounts = user.toJSON().Comments.length
-        const favoritedRestaurants = user.toJSON().FavoritedRestaurants.length
-        const followingsCounts = user.toJSON().Followings.length
-        const followersCounts = user.toJSON().Followers.length
-        return res.render('profile', { user: user.toJSON(), isUser, commentCounts, favoritedRestaurants, followingsCounts, followersCounts })
+        const isUser = helpers.getUser(req).id === user.id
+        const commentCounts = user.Comments.length
+        const favoritedRestaurants = user.FavoritedRestaurants.length
+        const followingsCounts = user.Followings.length
+        const followersCounts = user.Followers.length
+        const isFollowed = user.Followers.map(f => f.id).includes(helpers.getUser(req).id)
+        return res.render('profile', { user1: user.toJSON(), isUser, commentCounts, favoritedRestaurants, followingsCounts, followersCounts, isFollowed })
       })
   },
   editUser: (req, res) => {
