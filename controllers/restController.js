@@ -72,9 +72,7 @@ const restController = {
       ]
     })
       .then(restaurant => {
-        let viewCounts = restaurant.viewCounts || 0
-        viewCounts++
-        restaurant.viewCounts = viewCounts
+        restaurant.viewCounts = Number(restaurant.viewCounts) + 1
         restaurant.save()
         const isFavorited = restaurant.FavoritedUsers.map(F => F.id).includes(helpers.getUser(req).id)
         const isLiked = restaurant.LikedUsers.map(L => L.id).includes(helpers.getUser(req).id)
