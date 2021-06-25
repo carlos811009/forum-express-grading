@@ -60,7 +60,8 @@ const userController = {
       include: [{ model: Comment, include: [Restaurant] }]
     })
       .then((user) => {
-        return res.render('profile', { user: user.toJSON() })
+        const isUser = user.toJSON().id === helpers.getUser(req).id
+        return res.render('profile', { user: user.toJSON(), isUser })
       })
   },
   editUser: (req, res) => {
@@ -195,6 +196,7 @@ const userController = {
           isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
         }))
         users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
+        users = users.splice(0, 9)
         return res.render('topUsers', { users })
       })
   },
