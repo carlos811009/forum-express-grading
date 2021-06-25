@@ -133,7 +133,7 @@ const restController = {
           {
             ...r,
             id: r.id,
-            Category: r.Category.dataValues,
+            Category: r.Category,
             description: r.description.substring(0, 50),
             favoriteCounts: r.FavoritedUsers.length,
             isFavorited: helpers.getUser(req).FavoritedRestaurants.map(f => f.id).includes(r.id)
