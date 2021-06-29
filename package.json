@@ -1,11 +1,11 @@
 {
   "name": "forum-express-workspace",
   "version": "1.0.0",
-  "description": "",
+  "description": "1. Fork 2. git clone 3. 更改專案名稱",
   "main": "_helpers.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js",
+    "dev": "NODE_ENV=development nodemon app.js",
     "test": "mocha tests --exit --recursive --timeout 5000"
   },
   "repository": {
@@ -40,5 +40,9 @@
     "sequelize-cli": "^6.2.0",
     "sinon": "^9.2.0",
     "supertest": "^5.0.0"
-  }
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "keywords": []
 }

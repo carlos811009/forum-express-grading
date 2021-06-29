@@ -5,9 +5,9 @@ const helpers = require('./_helpers')
 const session = require('express-session')
 const passport = require('./config/passport')
 const methodOverride = require('method-override')
-const db = require('./models')
 const app = express()
 
+console.log(process.env.NODE_ENV)
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
@@ -35,7 +35,7 @@ app.use((req, res, next) => {
 
 
 
-require('./routes')(app, passport)
+require('./routes')(app)
 
 module.exports = app
 app.listen(port, () => {
