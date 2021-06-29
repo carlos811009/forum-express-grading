@@ -3,6 +3,7 @@ const adminController = require('../controllers/adminController.js')
 const userController = require('../controllers/userController.js')
 const categoryController = require('../controllers/categoryController.js')
 const commentController = require('../controllers/commentController.js')
+
 const express = require('express');
 const router = express.Router()
 const passport = require('../config/passport')
@@ -60,7 +61,6 @@ router.put('/admin/restaurants/:id', authenticatedAdmin, upload.single('image'),
 router.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'))
 router.get('/admin/restaurants', authenticatedAdmin, adminController.getRestaurants)
 router.delete('/admin/restaurants/:id', authenticatedAdmin, adminController.deleteRestaurant)
-
 
 router.get('/signup', userController.signUpPage)
 router.post('/signup', userController.signUp)
