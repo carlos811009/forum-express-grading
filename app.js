@@ -7,7 +7,7 @@ const passport = require('./config/passport')
 const methodOverride = require('method-override')
 const app = express()
 
-console.log(process.env.NODE_ENV)
+
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
