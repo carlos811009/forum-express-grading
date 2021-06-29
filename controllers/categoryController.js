@@ -8,12 +8,6 @@ let categoryController = {
       return res.render('admin/categories', data)
     })
   },
-  postCategories: (req, res) => {
-    return Category.create({
-      name: req.body.category_name
-    })
-      .then(() => res.redirect('/admin/categories'))
-  },
   deleteCategory: (req, res) => {
     return Category.findByPk(req.params.id)
       .then(category => category.destroy()
@@ -32,6 +26,16 @@ let categoryController = {
           res.redirect('/admin/categories')
         })
       })
+  },
+  postCategory: (req, res) => {
+    adminService.postCategory(req, res, (data) => {
+      if (data.status === 'success') {
+        req.flash('success_messages', data.message)
+        return res.redirect('/admin/categories')
+      }
+      req.flash('error_messages', data.message)
+      return res.redirect('/admin/categories')
+    })
   }
 }
 

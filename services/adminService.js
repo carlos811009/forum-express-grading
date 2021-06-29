@@ -117,6 +117,18 @@ const adminController = {
         })
     }
   },
+
+  postCategory: (req, res, callback) => {
+    if (req.body.category_name) {
+      return Category.create({
+        name: req.body.category_name
+      })
+        .then((category) => {
+          callback({ status: 'success', message: 'category was successfully created' })
+        })
+    }
+    callback({ status: 'error', message: "name didn't exist" })
+  },
 }
 
 
