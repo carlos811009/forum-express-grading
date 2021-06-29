@@ -14,7 +14,7 @@ let categoryController = {
               })
             })
         } else {
-          return res.render('admin/categories', { categories, })
+          return res.render('admin/categories', { categories })
         }
       })
   },

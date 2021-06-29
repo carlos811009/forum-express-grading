@@ -15,5 +15,11 @@ const adminController = {
       return res.json(data)
     })
   },
+  getCategories: (req, res) => {
+    adminService.getCategories(req, res, (data) => {
+      return res.json(data)
+    })
+
+  },
 }
 module.exports = adminController
