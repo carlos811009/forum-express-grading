@@ -119,7 +119,7 @@ const adminController = {
   },
 
   postCategory: (req, res, callback) => {
-    if (req.body.category_name) {
+    if (req.body.category_name.trim() !== '') {
       return Category.create({
         name: req.body.category_name
       })
@@ -129,6 +129,21 @@ const adminController = {
     }
     callback({ status: 'error', message: "name didn't exist" })
   },
+
+  putCategory: (req, res, callback) => {
+    Category.findByPk(req.params.id)
+      .then((category) => {
+        category.update({
+          name: req.body.category_name
+        }).then((restaurant) => {
+          if (req.body.category_name.trim() !== '') {
+            return callback({ status: 'success', message: 'category was successfully to update' })
+          }
+          callback({ status: 'error', message: "name didn't exist" })
+        })
+      })
+  },
+
 }
 
 

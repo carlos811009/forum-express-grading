@@ -17,16 +17,16 @@ let categoryController = {
         }))
   },
   putCategory: (req, res) => {
-    Category.findByPk(req.params.id)
-      .then((category) => {
-        category.update({
-          name: req.body.category_name
-        }).then((restaurant) => {
-          req.flash('success_messages', 'category was successfully to update')
-          res.redirect('/admin/categories')
-        })
-      })
+    adminService.putCategory(req, res, (data) => {
+      if (data.status === 'success') {
+        req.flash('success_messages', data.message)
+        return res.redirect('/admin/categories')
+      }
+      req.flash('error_messages', data.message)
+      return res.redirect('/admin/categories')
+    })
   },
+
   postCategory: (req, res) => {
     adminService.postCategory(req, res, (data) => {
       if (data.status === 'success') {
