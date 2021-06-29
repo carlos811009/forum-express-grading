@@ -3,7 +3,6 @@ const handlebars = require('express-handlebars')
 const flash = require('connect-flash')
 const helpers = require('./_helpers')
 const session = require('express-session')
-const passport = require('./config/passport')
 const methodOverride = require('method-override')
 const app = express()
 
@@ -11,6 +10,8 @@ const app = express()
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
+
+const passport = require('./config/passport')
 
 const port = process.env.PORT || 3000
 app.use('/upload', express.static(__dirname + '/upload'))
