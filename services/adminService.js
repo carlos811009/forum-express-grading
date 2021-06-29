@@ -144,6 +144,15 @@ const adminController = {
       })
   },
 
+  deleteCategory: (req, res, callback) => {
+    return Category.findByPk(req.params.id)
+      .then(category => category.destroy()
+        .then(() => {
+          return callback({ status: 'success', message: 'category Deleted' })
+        })
+      )
+  },
+
 }
 
 

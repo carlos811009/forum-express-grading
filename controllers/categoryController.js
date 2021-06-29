@@ -9,12 +9,10 @@ let categoryController = {
     })
   },
   deleteCategory: (req, res) => {
-    return Category.findByPk(req.params.id)
-      .then(category => category.destroy()
-        .then(() => {
-          req.flash('success_messages', 'category Deleted')
-          res.redirect('/admin/categories')
-        }))
+    adminService.deleteCategory(req, res, (data) => {
+      req.flash('success_messages', data.message)
+      return res.redirect('/admin/categories')
+    })
   },
   putCategory: (req, res) => {
     adminService.putCategory(req, res, (data) => {
