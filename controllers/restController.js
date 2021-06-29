@@ -3,8 +3,8 @@ const helpers = require('../_helpers')
 const Restaurant = db.Restaurant
 const Category = db.Category
 const Comment = db.Comment
-const moment = require('moment')
 const User = db.User
+const moment = require('moment')
 const pageLimit = 12
 let offset = 0
 
