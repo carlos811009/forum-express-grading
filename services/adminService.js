@@ -1,8 +1,9 @@
+const imgur = require('imgur-node-api')
+const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const db = require('../models')
 const Restaurant = db.Restaurant
 const Category = db.Category
-const imgur = require('imgur-node-api')
-const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
+
 
 const adminController = {
   getRestaurants: (req, res, callback) => {
@@ -58,7 +59,7 @@ const adminController = {
           image: file ? img.data.link : null,
           CategoryId: req.body.categoryId
         }).then((restaurant) => {
-          callback({ status: 'success_messages', message: 'restaurant was successfully created' })
+          callback({ status: 'success', message: 'restaurant was successfully created' })
         })
       })
     } else {

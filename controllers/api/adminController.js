@@ -29,12 +29,7 @@ const adminController = {
   },
   postRestaurant: (req, res) => {
     adminService.postRestaurant(req, res, (data) => {
-      if (data.status === 'error') {
-        req.flash('error_messages', data.message)
-        return res.redirect('back')
-      }
-      req.flash('success_messages', data.message)
-      res.redirect('/admin/restaurants')
+      return res.json(data)
     })
   },
 
