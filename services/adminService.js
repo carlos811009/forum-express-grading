@@ -117,7 +117,6 @@ const adminController = {
         })
     }
   },
-
   postCategory: (req, res, callback) => {
     if (req.body.category_name.trim() !== '') {
       return Category.create({
@@ -129,7 +128,6 @@ const adminController = {
     }
     callback({ status: 'error', message: "name didn't exist" })
   },
-
   putCategory: (req, res, callback) => {
     Category.findByPk(req.params.id)
       .then((category) => {
@@ -143,7 +141,6 @@ const adminController = {
         })
       })
   },
-
   deleteCategory: (req, res, callback) => {
     return Category.findByPk(req.params.id)
       .then(category => category.destroy()

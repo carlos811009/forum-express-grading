@@ -10,7 +10,7 @@ const Restaurant = db.Restaurant
 const Favorite = db.Favorite
 const Like = db.Like
 const Followship = db.Followship
-
+const userService = require('../services/userService.js')
 
 const userController = {
   signUpPage: (req, res) => {
@@ -56,23 +56,9 @@ const userController = {
     res.redirect('/signin')
   },
   getUser: (req, res) => {
-    User.findByPk(req.params.id, {
-      include: [
-        { model: Comment, include: [Restaurant] },
-        { model: User, as: 'Followers' },
-        { model: User, as: 'Followings' },
-        { model: Restaurant, as: 'FavoritedRestaurants' }
-      ]
+    userService.getUser(req, res, (data) => {
+      return res.render('profile', data)
     })
-      .then((user) => {
-        const isUser = helpers.getUser(req).id === user.id
-        const commentCounts = user.Comments.length
-        const favoritedRestaurants = user.FavoritedRestaurants.length
-        const followingsCounts = user.Followings.length
-        const followersCounts = user.Followers.length
-        const isFollowed = user.Followers.map(f => f.id).includes(helpers.getUser(req).id)
-        return res.render('profile', { user1: user.toJSON(), isUser, commentCounts, favoritedRestaurants, followingsCounts, followersCounts, isFollowed })
-      })
   },
   editUser: (req, res) => {
     return User.findByPk(req.params.id)
@@ -116,44 +102,23 @@ const userController = {
     }
   },
   addFavorite: (req, res) => {
-    return Favorite.findOne({
-      where: {
-        RestaurantId: req.params.restaurantId,
-        UserId: helpers.getUser(req).id
+    userService.addFavorite(req, res, (data) => {
+      if (data.status === 'success') {
+        req.flash('success_messages', data.message)
+        return res.redirect('/restaurants')
+      } else {
+        req.flash('error_messages', data.message)
+        return res.redirect('/restaurants')
       }
     })
-      .then(favorite => {
-        if (favorite) {
-          req.flash('error_messages', 'add to Favorite already')
-          return res.redirect('back')
-        } else {
-          return Favorite.create({
-            UserId: helpers.getUser(req).id,
-            RestaurantId: req.params.restaurantId
-          })
-            .then(() => {
-              req.flash('success_messages', 'Restaurant add to Favorite')
-              res.redirect('back')
-            })
-            .catch(err => console.log('addFavorite error'))
-        }
-      })
   },
   removeFavorite: (req, res) => {
-    return Favorite.findOne({
-      where: {
-        RestaurantId: req.params.restaurantId,
-        UserId: helpers.getUser(req).id
+    userService.removeFavorite(req, res, (data) => {
+      if (data.status === 'success') {
+        req.flash('error_messages', data.message)
+        return res.redirect('back')
       }
     })
-      .then(favorite => {
-        favorite.destroy()
-      })
-      .then(() => {
-        req.flash('error_messages', 'Restaurant remove from Favorite')
-        res.redirect('back')
-      })
-      .catch(err => console.log('remoteFavorite error'))
   },
   addLike: (req, res) => {
     Like.findOne({
