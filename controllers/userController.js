@@ -136,41 +136,15 @@ const userController = {
     })
   },
   addFollowing: (req, res) => {
-    Followship.findOne({
-      where: {
-        followerId: helpers.getUser(req).id,
-        followingId: req.params.userId
+    userService.addFollowing(req, res, (data) => {
+      if (data.status === 'success') {
+        req.flash('success_messages', data.message)
+        return res.redirect('back')
       }
     })
-      .then(follow => {
-        if (follow) {
-          req.flash('error_messages', 'already Following')
-          return res.redirect('back')
-        } else {
-          Followship.create({
-            followerId: helpers.getUser(req).id,
-            followingId: req.params.userId
-          })
-            .then(() => {
-              req.flash('success_messages', 'Success Following')
-              res.redirect('back')
-            })
-            .catch(err => console.log('addFollow error'))
-        }
-      })
   },
   removeFollowing: (req, res) => {
-    Followship.findOne({
-      where: {
-        followerId: helpers.getUser(req).id,
-        followingId: req.params.userId
-      }
-    })
-      .then(follow => {
-        follow.destroy()
-        res.redirect('back')
-      })
-      .catch(err => console.log('remoteFollow error'))
+    userService.removeFollowing(req, res, (data) => res.redirect('back'))
   }
 }
 

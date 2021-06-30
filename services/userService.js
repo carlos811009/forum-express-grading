@@ -8,6 +8,7 @@ const Comment = db.Comment
 const User = db.User
 const Favorite = db.Favorite
 const Like = db.Like
+const Followship = db.Followship
 
 const userController = {
   getUser: (req, res, callback) => {
@@ -115,6 +116,42 @@ const userController = {
       })
       .catch(err => console.log(err))
   },
+  addFollowing: (req, res, callback) => {
+    Followship.findOne({
+      where: {
+        followerId: helpers.getUser(req).id,
+        followingId: req.params.userId
+      }
+    })
+      .then(follow => {
+        if (follow) {
+          req.flash('error_messages', 'already Following')
+          return res.redirect('back')
+        } else {
+          Followship.create({
+            followerId: helpers.getUser(req).id,
+            followingId: req.params.userId
+          })
+            .then(() => {
+              return callback({ status: 'success', message: "Success Following" })
+            })
+            .catch(err => console.log(err))
+        }
+      })
+  },
+  removeFollowing: (req, res, callback) => {
+    Followship.findOne({
+      where: {
+        followerId: helpers.getUser(req).id,
+        followingId: req.params.userId
+      }
+    })
+      .then(follow => {
+        follow.destroy()
+        return callback({ status: 'success', message: 'Untrack the user' })
+      })
+      .catch(err => console.log(err))
+  }
 }
 
 
