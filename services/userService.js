@@ -185,7 +185,14 @@ const userController = {
             .catch(err => console.log(err))
         })
     }
-  }
+  },
+  editUser: (req, res, callback) => {
+    return User.findByPk(req.params.id)
+      .then((user2) => {
+        return callback({ user2 })
+      })
+      .catch(err => console.log(err))
+  },
 }
 
 

@@ -58,11 +58,9 @@ const userController = {
     })
   },
   editUser: (req, res) => {
-    return User.findByPk(req.params.id)
-      .then((user2) => {
-        return res.render('editProfile', { user2 })
-      })
-      .catch(err => console.log(err))
+    userService.editUser(req, res, (data) => {
+      return res.render('editProfile', data)
+    })
   },
   putUser: (req, res) => {
     userService.putUser(req, res, (data) => {
@@ -75,39 +73,6 @@ const userController = {
       // return res.redirect('back')
       return res.redirect(`/users/${data.user.dataValues.id}`)
     })
-    // if (!req.body.name) {
-    //   req.flash('error_messages', "name didn't exist")
-    //   return res.redirect('back')
-    // }
-    // const { file } = req
-    // if (file) {
-    //   imgur.setClientID(IMGUR_CLIENT_ID);
-    //   imgur.upload(file.path, (err, img) => {
-    //     return User.findByPk(req.params.id)
-    //       .then((user) => {
-    //         user.update({
-    //           name: req.body.name,
-    //           image: file ? img.data.link : user.image
-    //         })
-    //           .then((user) => {
-    //             req.flash('success_messages', 'Profile was successfully to update')
-    //             res.redirect(`/users/${user.id}`)
-    //           })
-    //       })
-    //   })
-    // } else {
-    //   return User.findByPk(req.params.id)
-    //     .then((user) => {
-    //       user.update({
-    //         name: req.body.name,
-    //         image: user.image
-    //       })
-    //         .then((user) => {
-    //           req.flash('success_messages', 'Profile was successfully to update')
-    //           res.redirect(`/users/${user.id}`)
-    //         })
-    //     })
-    // }
   },
   addFavorite: (req, res) => {
     userService.addFavorite(req, res, (data) => {

@@ -52,7 +52,6 @@ router.delete('/admin/categories/:id', authenticatedAdmin, categoryController.de
 router.get('/admin/categories/:id', authenticatedAdmin, categoryController.getCategories)
 router.put('/admin/categories/:id', authenticatedAdmin, categoryController.putCategory)
 
-
 router.get('/admin/restaurants/create', authenticatedAdmin, adminController.createRestaurant)
 router.get('/admin/restaurants/:id/edit', authenticatedAdmin, adminController.editRestaurant)
 router.get('/admin/restaurants/:id', authenticatedAdmin, adminController.getRestaurant)

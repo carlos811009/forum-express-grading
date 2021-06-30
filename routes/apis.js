@@ -5,6 +5,7 @@ const upload = multer({ dest: 'temp/' })
 
 const adminController = require('../controllers/api/adminController.js')
 const userController = require('../controllers/api/userController.js')
+
 const passport = require('../config/passport')
 
 const authenticated = passport.authenticate('jwt', { session: false })
@@ -31,5 +32,7 @@ router.delete('/admin/categories/:id', authenticated, authenticatedAdmin, adminC
 
 router.post('/signin', userController.signIn)
 router.post('/signup', userController.signUp)
+
+router.get('/users/:id', userController.getUser)
 
 module.exports = router
