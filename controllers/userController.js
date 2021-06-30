@@ -5,9 +5,6 @@ const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const bcrypt = require('bcryptjs')
 const db = require('../models')
 const User = db.User
-const Comment = db.Comment
-const Restaurant = db.Restaurant
-const Favorite = db.Favorite
 const Like = db.Like
 const Followship = db.Followship
 const userService = require('../services/userService.js')
@@ -105,10 +102,7 @@ const userController = {
     userService.addFavorite(req, res, (data) => {
       if (data.status === 'success') {
         req.flash('success_messages', data.message)
-        return res.redirect('/restaurants')
-      } else {
-        req.flash('error_messages', data.message)
-        return res.redirect('/restaurants')
+        return res.redirect('back')
       }
     })
   },
@@ -121,42 +115,20 @@ const userController = {
     })
   },
   addLike: (req, res) => {
-    Like.findOne({
-      where: {
-        UserId: helpers.getUser(req).id,
-        RestaurantId: req.params.restaurantId
+    userService.addLike(req, res, (data) => {
+      if (data.status === 'success') {
+        req.flash('success_messages', data.message)
+        return res.redirect('back')
       }
     })
-      .then(like => {
-        if (like) {
-          req.flash('error_messages', 'add to Like already')
-          return res.redirect('back')
-        } else {
-          Like.create({
-            UserId: helpers.getUser(req).id,
-            RestaurantId: req.params.restaurantId
-          })
-            .then(() => {
-              req.flash('success_messages', 'Restaurant add to Like')
-              res.redirect('back')
-            })
-            .catch(err => console.log('addLike error'))
-        }
-      })
   },
   removeLike: (req, res) => {
-    Like.findOne({
-      where: {
-        UserId: helpers.getUser(req).id,
-        RestaurantId: req.params.restaurantId
+    userService.removeLike(req, res, (data) => {
+      if (data.status === 'success') {
+        req.flash('error_messages', data.message)
+        return res.redirect('back')
       }
     })
-      .then(like => {
-        like.destroy()
-        req.flash('error_messages', 'remove Like')
-        res.redirect('back')
-      })
-      .catch(err => console.log('remoteLike error'))
   },
   getTopUser: (req, res) => {
     User.findAll({

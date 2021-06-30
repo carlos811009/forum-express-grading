@@ -7,6 +7,7 @@ const Category = db.Category
 const Comment = db.Comment
 const User = db.Category
 const Favorite = db.Favorite
+const Like = db.Like
 
 const userController = {
   getUser: (req, res, callback) => {
@@ -42,7 +43,6 @@ const userController = {
           RestaurantId: req.params.restaurantId
         })
           .then(() => {
-            console.log('asasasasasaasasas')
             return callback({ status: 'success', message: "Restaurant add to Favorite" })
           })
           .catch(err => console.log(err))
@@ -65,7 +65,38 @@ const userController = {
       })
       .catch(err => console.log(err))
   },
+  addLike: (req, res, callback) => {
+    Like.findOne({
+      where: {
+        UserId: helpers.getUser(req).id,
+        RestaurantId: req.params.restaurantId
+      }
+    })
+      .then(like => {
+        Like.create({
+          UserId: helpers.getUser(req).id,
+          RestaurantId: req.params.restaurantId
+        })
+          .then(() => {
+            return callback({ status: 'success', message: "Restaurant add to Like" })
+          })
+          .catch(err => console.log(err))
 
+      })
+  },
+  removeLike: (req, res, callback) => {
+    Like.findOne({
+      where: {
+        UserId: helpers.getUser(req).id,
+        RestaurantId: req.params.restaurantId
+      }
+    })
+      .then(like => {
+        like.destroy()
+        return callback({ status: 'success', message: 'remove Like' })
+      })
+      .catch(err => console.log('remoteLike error'))
+  },
 }
 
 
