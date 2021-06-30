@@ -5,7 +5,7 @@ const db = require('../models')
 const Restaurant = db.Restaurant
 const Category = db.Category
 const Comment = db.Comment
-const User = db.Category
+const User = db.User
 const Favorite = db.Favorite
 const Like = db.Like
 
@@ -96,6 +96,24 @@ const userController = {
         return callback({ status: 'success', message: 'remove Like' })
       })
       .catch(err => console.log('remoteLike error'))
+  },
+  getTopUser: (req, res, callback) => {
+    User.findAll({
+      include: [
+        { model: User, as: 'Followers' }
+      ]
+    })
+      .then(users => {
+        users = users.map(user => ({
+          ...user,
+          FollowerCount: user.Followers.length,
+          isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
+        }))
+        users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
+        users = users.splice(0, 9)
+        return callback({ users })
+      })
+      .catch(err => console.log(err))
   },
 }
 

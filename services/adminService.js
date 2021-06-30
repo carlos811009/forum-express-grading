@@ -8,7 +8,7 @@ const Category = db.Category
 const adminController = {
   getRestaurants: (req, res, callback) => {
     return Restaurant.findAll({ raw: true, nest: true, include: [Category] }).then(restaurants => {
-      callback({ restaurants: restaurants })
+      callback({ restaurants })
     })
   },
   getRestaurant: (req, res, callback) => {

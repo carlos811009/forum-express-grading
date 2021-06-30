@@ -131,21 +131,9 @@ const userController = {
     })
   },
   getTopUser: (req, res) => {
-    User.findAll({
-      include: [
-        { model: User, as: 'Followers' }
-      ]
+    userService.getTopUser(req, res, (data) => {
+      return res.render('topUsers', data)
     })
-      .then(users => {
-        users = users.map(user => ({
-          ...user,
-          FollowerCount: user.Followers.length,
-          isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
-        }))
-        users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
-        users = users.splice(0, 9)
-        return res.render('topUsers', { users })
-      })
   },
   addFollowing: (req, res) => {
     Followship.findOne({
