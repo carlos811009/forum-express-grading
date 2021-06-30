@@ -1,12 +1,12 @@
 <div class="row">
   <div style="display: flex;">
-    <img class="img-responsive center-block" src="{{user1.image}}" style="width: 250px;margin-bottom: 25px;">
+    <img class="img-responsive center-block" src="{{user1.dataValues.image}}" style="width: 250px;margin-bottom: 25px;">
     <div class="ml-5">
       <div class="col-md-12">
-        <h1>{{user1.name}}</h1>
+        <h1>{{user1.dataValues.name}}</h1>
       </div>
       <div class="col-md-4">
-        <div class="email">{{user1.email}}</div>
+        <div class="email">{{user1.dataValues.email}}</div>
       </div>
       <div class="col-12">
         <div class="info mb-1"><strong>{{commentCounts}}</strong> 已評論餐廳</div>
@@ -16,16 +16,18 @@
       </div>
       {{#if isUser}}
       <div class="col-md-8">
-        <a href="/users/{{user1.id}}/edit">edit</a>
+        <a href="/users/{{user1.dataValues.id}}/edit">edit</a>
       </div>
       {{/if}}
+      {{#unless isUser}}
       {{#if this.isFollowed }}
-      <form action="/following/{{user1.id}}?_method=DELETE" method="POST" style="display: contents;"><button
+      <form action="/following/{{user1.dataValues.id}}?_method=DELETE" method="POST" style="display: contents;"><button
           type="submit" class="btn btn-danger">取消追蹤</button></form>
       {{else}}
-      <form action="/following/{{user1.id}}" method="POST" style="display: contents;"><button type="submit"
+      <form action="/following/{{user1.dataValues.id}}" method="POST" style="display: contents;"><button type="submit"
           class="btn btn-primary">追蹤</button></form>
       {{/if}}
+      {{/unless}}
     </div>
   </div>
   <hr>

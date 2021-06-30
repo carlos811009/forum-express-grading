@@ -24,6 +24,7 @@
     <h2>{{this.dataValues.name}}</h2>
     <span class="badge badge-secondary">追蹤人數：{{this.FollowerCount}}</span>
     <p>
+      {{#unless this.isUser}}
       {{#if this.isFollowed }}
     <form action="/following/{{this.dataValues.id}}?_method=DELETE" method="POST" style="display: contents;"><button
         type="submit" class="btn btn-danger">取消追蹤</button></form>
@@ -31,6 +32,7 @@
     <form action="/following/{{this.dataValues.id}}" method="POST" style="display: contents;"><button type="submit"
         class="btn btn-primary">追蹤</button></form>
     {{/if}}
+    {{/unless}}
     </p>
   </div>
   {{/each}}

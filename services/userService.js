@@ -27,8 +27,7 @@ const userController = {
         const followingsCounts = user.Followings.length
         const followersCounts = user.Followers.length
         const isFollowed = user.Followers.map(f => f.id).includes(helpers.getUser(req).id)
-        callback({ user1: user.toJSON() })
-        // callback({ user1: user.toJSON(), isUser, commentCounts, favoritedRestaurants, followingsCounts, followersCounts, isFollowed })
+        return callback({ user1: user, isUser, commentCounts, favoritedRestaurants, followingsCounts, followersCounts, isFollowed })
       })
   },
   addFavorite: (req, res, callback) => {
@@ -108,7 +107,8 @@ const userController = {
         users = users.map(user => ({
           ...user,
           FollowerCount: user.Followers.length,
-          isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
+          isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id),
+          isUser: helpers.getUser(req).id === user.id
         }))
         users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
         users = users.splice(0, 9)
@@ -151,6 +151,40 @@ const userController = {
         return callback({ status: 'success', message: 'Untrack the user' })
       })
       .catch(err => console.log(err))
+  },
+  putUser: (req, res, callback) => {
+    if (!req.body.name) {
+      return callback({ status: 'error', message: "name didn't exist" })
+    }
+    const { file } = req
+    if (file) {
+      imgur.setClientID(IMGUR_CLIENT_ID);
+      imgur.upload(file.path, (err, img) => {
+        return User.findByPk(req.params.id)
+          .then((user) => {
+            user.update({
+              name: req.body.name,
+              image: file ? img.data.link : user.image
+            })
+              .then((user) => {
+                return callback({ status: 'success', message: "Profile was successfully to update", user })
+              })
+          })
+          .catch(err => console.log(err))
+      })
+    } else {
+      return User.findByPk(req.params.id)
+        .then((user) => {
+          user.update({
+            name: req.body.name,
+            image: user.image
+          })
+            .then((user) => {
+              return callback({ status: 'success', message: "Profile was successfully to update", user })
+            })
+            .catch(err => console.log(err))
+        })
+    }
   }
 }
 
