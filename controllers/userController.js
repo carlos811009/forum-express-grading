@@ -121,7 +121,10 @@ const userController = {
     })
   },
   removeFollowing: (req, res) => {
-    userService.removeFollowing(req, res, (data) => res.redirect('back'))
+    userService.removeFollowing(req, res, (data) => {
+      req.flash('error_messages', data.message)
+      res.redirect('back')
+    })
   }
 }
 

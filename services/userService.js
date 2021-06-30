@@ -30,6 +30,7 @@ const userController = {
         return callback({ user1: user, isUser, commentCounts, favoritedRestaurants, followingsCounts, followersCounts, isFollowed })
       })
   },
+
   addFavorite: (req, res, callback) => {
     return Favorite.findOne({
       where: {
@@ -45,7 +46,10 @@ const userController = {
           .then(() => {
             return callback({ status: 'success', message: "Restaurant add to Favorite" })
           })
-          .catch(err => console.log(err))
+          .catch(err => {
+            callback({ status: 'error', message: "Favorite error" })
+            console.log(err)
+          })
 
       })
   },
