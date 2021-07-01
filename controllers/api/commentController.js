@@ -1,0 +1,26 @@
+const bcrypt = require('bcryptjs')
+const db = require('../../models')
+const User = db.User
+const userService = require('../../services/userService.js')
+
+// JWT
+const jwt = require('jsonwebtoken')
+const passportJWT = require('passport-jwt')
+// const ExtractJwt = passportJWT.ExtractJwt
+// const JwtStrategy = passportJWT.Strategy
+
+let commentController = {
+  postComment: (req, res) => {
+    commentService.postComment(req, res, (data) => {
+      return res.json(data)
+    })
+  },
+
+  deleteComment: (req, res) => {
+    commentService.deleteComment(req, res, (data) => {
+      return res.json(data)
+    })
+  }
+}
+
+module.exports = commentController
