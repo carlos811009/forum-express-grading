@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs')
 const db = require('../../models')
 const User = db.User
-const userService = require('../../services/userService.js')
+const commentService = require('../../services/commentService.js')
 
 // JWT
 const jwt = require('jsonwebtoken')
