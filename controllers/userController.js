@@ -1,12 +1,7 @@
-const fs = require('fs')
-const imgur = require('imgur-node-api')
-const helpers = require('../_helpers')
-const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 const bcrypt = require('bcryptjs')
 const db = require('../models')
 const User = db.User
-const Like = db.Like
-const Followship = db.Followship
+
 const userService = require('../services/userService.js')
 
 const userController = {

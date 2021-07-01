@@ -52,6 +52,10 @@ const userController = {
           })
 
       })
+      .catch(err => {
+        callback({ status: 'error', message: "Favorite error" })
+        console.log(err)
+      })
   },
   removeFavorite: (req, res, callback) => {
     return Favorite.findOne({

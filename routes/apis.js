@@ -35,11 +35,13 @@ router.post('/signup', userController.signUp)
 
 router.get('/users/:id', userController.getUser)
 router.get('/users/:id/edit', userController.editUser)
+
 router.put('/users/:id', upload.single('image'), userController.putUser)
-router.post('/favorite/:restaurantId', userController.addFavorite)
-router.delete('/favorite/:restaurantId', userController.removeFavorite)
 
-router.post('/like/:restaurantId', userController.addLike)
+router.post('/favorite/:restaurantId', authenticated, authenticatedAdmin, userController.addFavorite)
+router.delete('/favorite/:restaurantId', authenticated, authenticatedAdmin, userController.removeFavorite)
 
+router.post('/like/:restaurantId', authenticated, authenticatedAdmin, userController.addLike)
+router.delete('/like/:restaurantId', authenticated, authenticatedAdmin, userController.removeLike)
 
 module.exports = router
