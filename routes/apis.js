@@ -6,6 +6,7 @@ const upload = multer({ dest: 'temp/' })
 const adminController = require('../controllers/api/adminController.js')
 const userController = require('../controllers/api/userController.js')
 const commentController = require('../controllers/api/commentController.js')
+const restController = require('../controllers/api/restController.js')
 
 const passport = require('../config/passport')
 
@@ -47,5 +48,11 @@ router.delete('/like/:restaurantId', authenticated, authenticatedAdmin, userCont
 
 router.post('/comments', authenticated, authenticatedAdmin, commentController.postComment)
 router.delete('/comments/:id', authenticated, authenticatedAdmin, commentController.deleteComment)
+
+router.get('/restaurants/feeds', restController.getFeeds)
+router.get('/restaurants/top', restController.getTopRestaurants)
+router.get('/restaurants/:id/dashboard', authenticated, authenticatedAdmin, restController.getDashboard)
+router.get('/restaurants/:id', authenticated, authenticatedAdmin, restController.getRestaurant)
+router.get('/restaurants', authenticated, authenticatedAdmin, restController.getRestaurants)
 
 module.exports = router

@@ -18,14 +18,14 @@
 {{#each restaurants}}
 <div class="card mb-4 shadow-sm mx-auto" style="display:flex;flex-direction:row; width:500px">
   <div class="col-5" style="">
-    <img class="card-img-top" src="{{this.dataValues.image}}" alt="Card image cap" width="286px" height="180px">
+    <img class="card-img-top" src="{{this.image}}" alt="Card image cap" width="286px" height="180px">
   </div>
   <div class="card-body row">
     <h5 class="card-text col-12">
-      {{this.dataValues.name}}
+      {{this.name}}
     </h5>
     <div class="col-12">
-      <span class="badge badge-secondary">{{this.Category.dataValues.name}}</span>
+      <span class="badge badge-secondary">{{this.Category.name}}</span>
       <span class="badge badge-secondary">收藏數：{{this.favoriteCounts}}</span>
     </div>
 

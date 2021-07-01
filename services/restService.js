@@ -118,12 +118,15 @@ const restController = {
   },
   getTopRestaurants: (req, res, callback) => {
     Restaurant.findAll({
+      raw: true,
+      nest: true,
       include: [
         Category,
         { model: User, as: 'FavoritedUsers' }
       ]
     })
       .then(restaurants => {
+
         restaurants = restaurants.map(r => (
           {
             ...r,
@@ -139,6 +142,5 @@ const restController = {
       })
   }
 }
-
 
 module.exports = restController
